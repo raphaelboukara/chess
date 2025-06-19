@@ -238,6 +238,125 @@ const londonSystemMoves: (ChessMove | ChessMove[])[] = [
   }
 ];
 
+const frenchDefenseMoves: (ChessMove | ChessMove[])[] = [
+  {
+    from: 'e2',
+    to: 'e4',
+    piece: 'wp',
+    color: 'w',
+    description: 'Les Blancs prennent le centre, ouvrant des lignes pour la dame et le fou.'
+  },
+  {
+    from: 'e7',
+    to: 'e6',
+    piece: 'bp',
+    color: 'b',
+    description: 'Premier coup de la Défense Française : les Noirs préparent la poussée d5 pour contester le centre.'
+  },
+  {
+    from: 'd2',
+    to: 'd4',
+    piece: 'wp',
+    color: 'w',
+    description: 'Les Blancs soutiennent le pion e4 et contrôlent encore plus de centre.'
+  },
+  {
+    from: 'd7',
+    to: 'd5',
+    piece: 'bp',
+    color: 'b',
+    description: 'Les Noirs contestent directement le centre, conformément à l’esprit de la Française.'
+  },
+  {
+    from: 'e4',
+    to: 'e5',
+    piece: 'wp',
+    color: 'w',
+    description: 'Variante d’avance : les Blancs gagnent de l’espace, mais les Noirs pourront attaquer la chaîne de pions.'
+  },
+  {
+    from: 'c8',
+    to: 'd7',
+    piece: 'bb',
+    color: 'b',
+    description: 'Les Noirs développent leur fou passif, souvent avant de verrouiller la diagonale avec ...c5.'
+  },
+  {
+    from: 'g1',
+    to: 'f3',
+    piece: 'wn',
+    color: 'w',
+    description: 'Les Blancs développent leur cavalier vers le centre et préparent le roque.'
+  },
+  {
+    from: 'c7',
+    to: 'c5',
+    piece: 'bp',
+    color: 'b',
+    description: 'Les Noirs attaquent la base de la chaîne de pions blanche (d4), thème classique de la Française.'
+  },
+  {
+    from: 'c2',
+    to: 'c3',
+    piece: 'wp',
+    color: 'w',
+    description: 'Les Blancs soutiennent le pion d4 et stabilisent la structure centrale.'
+  },
+  {
+    from: 'b8',
+    to: 'c6',
+    piece: 'bn',
+    color: 'b',
+    description: 'Les Noirs développent une pièce tout en mettant de la pression sur d4.'
+  },
+  {
+    from: 'f1',
+    to: 'd3',
+    piece: 'wb',
+    color: 'w',
+    description: 'Le fou blanc vise l’aile roi et soutient potentiellement une attaque sur h7.'
+  },
+  {
+    from: 'g8',
+    to: 'e7',
+    piece: 'bn',
+    color: 'b',
+    description: 'Les Noirs préfèrent développer ce cavalier par e7 pour soutenir f5 ou libérer f6 plus tard.'
+  },
+  [
+    {
+      from: 'e1',
+      to: 'g1',
+      piece: 'wk',
+      color: 'w',
+      description: 'Les Blancs roquent côté roi pour sécuriser le roi et activer la tour.'
+    },
+    {
+      from: 'h1',
+      to: 'f1',
+      piece: 'wr',
+      color: 'w',
+      description: 'Les Blancs roquent côté roi pour sécuriser le roi et activer la tour.'
+    }
+  ],
+  [
+    {
+      from: 'e8',
+      to: 'g8',
+      piece: 'bk',
+      color: 'b',
+      description: 'Les Noirs roquent à leur tour, amenant le roi en sécurité.'
+    },
+    {
+      from: 'h8',
+      to: 'f8',
+      piece: 'br',
+      color: 'b',
+      description: 'Les Noirs roquent à leur tour, amenant le roi en sécurité.'
+    }
+  ]
+];
+
 function App() {
   return (
     <>
@@ -248,6 +367,10 @@ function App() {
       <ChessBoard
         moves={londonSystemMoves}
         title="Système de Londres"
+      />
+      <ChessBoard
+        moves={frenchDefenseMoves}
+        title="Défense Française"
       />
     </>
     
