@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './ChessBoard.css';
 import ChessPiece from './ChessPiece';
 
@@ -11,7 +11,7 @@ export interface ChessMove {
 }
 
 interface ChessBoardProps {
-  moves: ChessMove[];
+  moves: (ChessMove | ChessMove[])[];
   initialPosition?: string[][];
   title?: string;
   description?: string;
@@ -26,7 +26,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   const [board, setBoard] = useState<string[][]>([]);
 
   // Initialize the board with the starting position
-  const getInitialBoard = (): string[][] => {
+  const getInitialBoard = useCallback((): string[][] => {
     if (initialPosition) return initialPosition;
     
     return [
@@ -39,17 +39,18 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
       ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
       ['wr', 'wn', 'wb', 'wq', 'wk', 'wb', 'wn', 'wr']
     ];
-  };
+  }, [initialPosition]);
 
   // Convert chess notation to board coordinates
-  const notationToCoords = (notation: string): [number, number] => {
+  const notationToCoords = useCallback((notation: string): [number, number] => {
     const file = notation.charCodeAt(0) - 97; // 'a' = 0, 'b' = 1, etc.
     const rank = 8 - parseInt(notation[1]); // '1' = 7, '2' = 6, etc.
     return [rank, file];
-  };
+  }, []);
 
-  // Apply a move to the board
-  const applyMove = (move: ChessMove, boardState: string[][]): string[][] => {
+  // Apply a single move to the board
+  const applySingleMove = useCallback((move: ChessMove, boardState: string[][]): string[][] => {
+    console.log('Applying single move');
     const newBoard = boardState.map(row => [...row]);
     const [fromRank, fromFile] = notationToCoords(move.from);
     const [toRank, toFile] = notationToCoords(move.to);
@@ -68,17 +69,46 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
     newBoard[fromRank][fromFile] = '';
     
     return newBoard;
-  };
+  }, [notationToCoords]);
+
+  // Apply a move (single or multiple) to the board
+  const applyMove = useCallback((move: ChessMove | ChessMove[], boardState: string[][]): string[][] => {
+    let newBoard = boardState.map(row => [...row]);
+    
+    if (Array.isArray(move)) {
+      console.log('Applying multiple moves');
+      // Apply multiple moves in sequence
+      for (const singleMove of move) {
+        newBoard = applySingleMove(singleMove, newBoard);
+      }
+    } else {
+      // Apply single move
+      newBoard = applySingleMove(move, newBoard);
+    }
+    
+    return newBoard;
+  }, [applySingleMove]);
 
   // Get piece color class
-  const getPieceColor = (piece: string): string => {
+  const getPieceColor = useCallback((piece: string): string => {
     return piece.startsWith('w') ? 'white' : 'black';
-  };
+  }, []);
+
+  // Get description for a move (single or multiple)
+  const getMoveDescription = useCallback((move: ChessMove | ChessMove[] | undefined): string | undefined => {
+    if (!move) return undefined;
+    
+    if (Array.isArray(move)) {
+      // For multiple moves, use the description from the first move if available
+      return move[0]?.description;
+    }
+    return move.description;
+  }, []);
 
   // Initialize board
   useEffect(() => {
     setBoard(getInitialBoard());
-  }, []);
+  }, [getInitialBoard]);
 
   // Apply moves up to current index
   useEffect(() => {
@@ -91,15 +121,14 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
     }
     
     setBoard(currentBoard);
-  }, [currentMoveIndex, moves]);
+  }, [currentMoveIndex, moves, getInitialBoard, applyMove]);
 
-  const goToMove = (index: number) => {
+  const goToMove = useCallback((index: number) => {
     setCurrentMoveIndex(Math.max(-1, Math.min(index, moves.length - 1)));
-  };
+  }, [moves.length]);
 
-
-  const goBack = () => goToMove(currentMoveIndex - 1);
-  const goForward = () => goToMove(currentMoveIndex + 1);
+  const goBack = useCallback(() => goToMove(currentMoveIndex - 1), [goToMove, currentMoveIndex]);
+  const goForward = useCallback(() => goToMove(currentMoveIndex + 1), [goToMove, currentMoveIndex]);
 
   const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   const ranks = ['8', '7', '6', '5', '4', '3', '2', '1'];
@@ -160,7 +189,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
         </h1>
 
         <div className="move-description">
-          {moves[currentMoveIndex]?.description}
+          {getMoveDescription(moves[currentMoveIndex])}
         </div>
         
         <div className="controls">

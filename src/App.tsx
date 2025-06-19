@@ -1,7 +1,7 @@
 import ChessBoard from './components/ChessBoard';
 import type { ChessMove } from './components/ChessBoard';
 
-const caroKannMoves: ChessMove[] = [
+const caroKannMoves: (ChessMove | ChessMove[])[] = [
   {
     from: 'e2',
     to: 'e4',
@@ -86,28 +86,171 @@ const caroKannMoves: ChessMove[] = [
     color: 'b',
     description: 'Les Noirs Préparent le roque et place le fou sur une case sûre.'
   },
+  [
+    {
+      from: 'e1',
+      to: 'g1',
+      piece: 'wk',
+      color: 'w',
+      description: 'Les Blancs roquent côté roi, sécurisant le roi et connectant les tours.'
+    },
+    {
+      from: 'h1',
+      to: 'f1',
+      piece: 'wr',
+      color: 'w',
+      description: 'Les Blancs roquent côté roi, sécurisant le roi et connectant les tours.'
+    }
+  ],
+  [
+    {
+      from: 'e8',
+      to: 'g8',
+      piece: 'bk',
+      color: 'b',
+      description: 'Les Noirs roquent pour mettre le roi en sécurité et activer la tour.'
+    },{
+      from: 'h8',
+      to: 'f8',
+      piece: 'br',
+      color: 'b',
+      description: 'Les Noirs roquent pour mettre le roi en sécurité et activer la tour.'
+    }
+  ]
+];
+
+const londonSystemMoves: (ChessMove | ChessMove[])[] = [
   {
-    from: 'e1',
-    to: 'g1',
-    piece: 'wk',
+    from: 'd2',
+    to: 'd4',
+    piece: 'wp',
     color: 'w',
-    description: 'Les Blancs roquent côté roi, sécurisant le roi et connectant les tours.'
+    description: 'Les Blancs occupent le centre avec un pion et préparent une structure solide.'
   },
   {
-    from: 'e8',
-    to: 'g8',
-    piece: 'bk',
+    from: 'd7',
+    to: 'd5',
+    piece: 'bp',
     color: 'b',
-    description: 'Les Noirs roquent pour mettre le roi en sécurité et activer la tour.'
+    description: 'Les Noirs répondent en occupant également le centre.'
+  },
+  {
+    from: 'g1',
+    to: 'f3',
+    piece: 'wn',
+    color: 'w',
+    description: 'Les Blancs développent un cavalier vers le centre et protègent le pion d4.'
+  },
+  {
+    from: 'g8',
+    to: 'f6',
+    piece: 'bn',
+    color: 'b',
+    description: 'Les Noirs développent un cavalier et mettent la pression sur le centre.'
+  },
+  {
+    from: 'c1',
+    to: 'f4',
+    piece: 'wb',
+    color: 'w',
+    description: 'Les Blancs développent leur fou en dehors de la chaîne de pions avant de jouer e3.'
+  },
+  {
+    from: 'e7',
+    to: 'e6',
+    piece: 'bp',
+    color: 'b',
+    description: 'Les Noirs consolident le centre et libèrent leur fou de cases noires.'
+  },
+  {
+    from: 'e2',
+    to: 'e3',
+    piece: 'wp',
+    color: 'w',
+    description: 'Les Blancs ferment la structure de pions, soutiennent le fou et préparent le développement du fou roi.'
+  },
+  {
+    from: 'f8',
+    to: 'e7',
+    piece: 'bb',
+    color: 'b',
+    description: 'Les Noirs développent leur fou sur une case modérément active et préparent le roque.'
+  },
+  {
+    from: 'f1',
+    to: 'd3',
+    piece: 'wb',
+    color: 'w',
+    description: 'Les Blancs centralisent leur fou et visent le roque roi.'
+  },
+  {
+    from: 'b8',
+    to: 'd7',
+    piece: 'bn',
+    color: 'b',
+    description: 'Les Noirs développent leur cavalier, souvent pour soutenir une poussée c5 future.'
+  },
+  {
+    from: 'b1',
+    to: 'd2',
+    piece: 'wn',
+    color: 'w',
+    description: 'Les Blancs développent leur dernier cavalier et préparent le roque.'
+  },
+  [
+    {
+      from: 'e1',
+      to: 'g1',
+      piece: 'wk',
+      color: 'w',
+      description: 'Les Blancs roquent côté roi pour mettre leur roi en sécurité.'
+    },
+    {
+      from: 'h1',
+      to: 'f1',
+      piece: 'wr',
+      color: 'w',
+      description: 'Les Blancs roquent côté roi pour connecter les tours.'
+    }
+  ],
+  [
+    {
+      from: 'e8',
+      to: 'g8',
+      piece: 'bk',
+      color: 'b',
+      description: 'Les Noirs roquent également pour sécuriser leur roi.'
+    },
+    {
+      from: 'h8',
+      to: 'f8',
+      piece: 'br',
+      color: 'b',
+      description: 'Les Noirs roquent également pour connecter leurs tours.'
+    }
+  ],
+  {
+    from: 'c2',
+    to: 'c3',
+    piece: 'wp',
+    color: 'w',
+    description: 'Les Blancs stabilisent leur centre avec un triangle de pions d4-e3-c3, typique du système de Londres.'
   }
 ];
 
 function App() {
   return (
-    <ChessBoard
-      moves={caroKannMoves}
-      title="Défense Caro-Kann"
-    />
+    <>
+      <ChessBoard
+        moves={caroKannMoves}
+        title="Défense Caro-Kann"
+      />
+      <ChessBoard
+        moves={londonSystemMoves}
+        title="Système de Londres"
+      />
+    </>
+    
   );
 }
 
