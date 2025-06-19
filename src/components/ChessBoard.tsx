@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './ChessBoard.css';
+import ChessPiece from './ChessPiece';
 
 export interface ChessMove {
   from: string;
   to: string;
   piece: string;
   color: 'w' | 'b';
-  san?: string; // Standard Algebraic Notation
   description?: string;
 }
 
@@ -54,19 +54,20 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
     const [fromRank, fromFile] = notationToCoords(move.from);
     const [toRank, toFile] = notationToCoords(move.to);
     
-    newBoard[toRank][toFile] = move.piece;
+    // Handle different piece code formats
+    let pieceCode = move.piece;
+    
+    // If it's a single character (like 'P', 'R', etc.), convert to full code
+    if (pieceCode.length === 1) {
+      pieceCode = move.color + pieceCode;
+    }
+    
+    console.log(`Move: ${move.from} to ${move.to}, Piece: ${move.piece} -> ${pieceCode}`);
+    
+    newBoard[toRank][toFile] = pieceCode;
     newBoard[fromRank][fromFile] = '';
     
     return newBoard;
-  };
-
-  // Get piece symbol for display
-  const getPieceSymbol = (piece: string): string => {
-    const pieceMap: { [key: string]: string } = {
-      'wk': '♔', 'wq': '♕', 'wr': '♖', 'wb': '♗', 'wn': '♘', 'wp': '♙',
-      'bk': '♚', 'bq': '♛', 'br': '♜', 'bb': '♝', 'bn': '♞', 'bp': '♟'
-    };
-    return pieceMap[piece] || '';
   };
 
   // Get piece color class
@@ -133,7 +134,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
             >
               {piece && (
                 <div className={`piece ${getPieceColor(piece)}`}>
-                  {getPieceSymbol(piece)}
+                  <ChessPiece piece={piece} size={45} />
                 </div>
               )}
             </div>

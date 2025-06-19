@@ -7,171 +7,98 @@ const caroKannMoves: ChessMove[] = [
     to: 'e4',
     piece: 'wp',
     color: 'w',
-    san: 'e4',
-    description: 'White controls the center and opens lines for the queen and bishop.'
+    description: 'Les Blancs contrôlent le centre et ouvrent des lignes pour la dame et le fou.'
   },
   {
     from: 'c7',
     to: 'c6',
     piece: 'bp',
     color: 'b',
-    san: 'c6',
-    description: 'The hallmark of the Caro-Kann Defense. Prepares d5 while keeping the position solid.'
+    description: 'Le coup emblématique de la Défense Caro-Kann. Prépare le coup d5 tout en gardant une position solide.'
   },
   {
     from: 'd2',
     to: 'd4',
     piece: 'wp',
     color: 'w',
-    san: 'd4',
-    description: 'White grabs more central space and supports the e4 pawn.'
+    description: 'Les Blancs s’emparent de plus d’espace central et soutiennent le pion e4.'
   },
   {
     from: 'd7',
     to: 'd5',
     piece: 'bp',
     color: 'b',
-    san: 'd5',
-    description: 'Black challenges the center directly, now that c6 supports this push.'
+    description: 'Les Noirs contestent directement le centre, maintenant que c6 soutient cette poussée.'
   },
   {
     from: 'e4',
     to: 'd5',
     piece: 'wp',
     color: 'w',
-    san: 'exd5',
-    description: 'White captures and forces Black to decide how to recapture.'
+    description: 'Les Blancs capturent et forcent les Noirs à choisir leur manière de reprendre.'
   },
   {
     from: 'c6',
     to: 'd5',
     piece: 'bp',
     color: 'b',
-    san: 'cxd5',
-    description: 'Black recaptures toward the center, establishing a pawn presence.'
+    description: 'Les Noirs reprennent vers le centre, établissant une présence de pions.'
   },
   {
     from: 'g1',
     to: 'f3',
     piece: 'wn',
     color: 'w',
-    san: 'Nf3',
-    description: 'Develops a knight while eyeing key central and kingside squares.'
+    description: 'Les Blancs développent un cavalier tout en visant des cases centrales et du flanc roi.'
   },
   {
     from: 'g8',
     to: 'f6',
     piece: 'bn',
     color: 'b',
-    san: 'Nf6',
-    description: 'Develops a knight and applies pressure to e4.'
+    description: 'Les Noirs développent un cavalier et exerce une pression sur e4.'
   },
   {
     from: 'c1',
     to: 'f4',
     piece: 'wb',
     color: 'w',
-    san: 'Bf4',
-    description: 'Develops the bishop to an active square before closing the diagonal with e3.'
+    description: 'Les Blancs développent le fou sur une case active avant de fermer la diagonale avec e3.'
   },
   {
     from: 'e7',
     to: 'e6',
     piece: 'bp',
     color: 'b',
-    san: 'e6',
-    description: 'Solidifies the center and opens the diagonal for the dark-squared bishop.'
-  },
-  {
-    from: 'e1',
-    to: 'g1',
-    piece: 'wk',
-    color: 'w',
-    san: 'O-O',
-    description: 'White castles kingside, securing the king and connecting the rooks.'
-  },
-  {
-    from: 'f8',
-    to: 'e7',
-    piece: 'bb',
-    color: 'b',
-    san: 'Be7',
-    description: 'Prepares castling and places the bishop on a solid square.'
+    description: 'Les Noirs solidifient le centre et ouvre la diagonale du fou de cases noires.'
   },
   {
     from: 'f1',
     to: 'd3',
     piece: 'wb',
     color: 'w',
-    san: 'Bd3',
-    description: 'The bishop aims toward the kingside and helps control e4.'
-  },
-  {
-    from: 'e8',
-    to: 'g8',
-    piece: 'bk',
-    color: 'b',
-    san: 'O-O',
-    description: 'Black castles to safety and activates the rook.'
-  }
-];
-
-const sampleMoves: ChessMove[] = [
-  {
-    from: 'e2',
-    to: 'e4',
-    piece: 'wp',
-    color: 'w',
-    san: 'e4'
-  },
-  {
-    from: 'e7',
-    to: 'e5',
-    piece: 'bp',
-    color: 'b',
-    san: 'e5'
-  },
-  {
-    from: 'g1',
-    to: 'f3',
-    piece: 'wn',
-    color: 'w',
-    san: 'Nf3'
-  },
-  {
-    from: 'b8',
-    to: 'c6',
-    piece: 'bn',
-    color: 'b',
-    san: 'Nc6'
-  },
-  {
-    from: 'f1',
-    to: 'c4',
-    piece: 'wb',
-    color: 'w',
-    san: 'Bc4'
+    description: 'Le fou des Blancs vise le flanc roi et contribue au contrôle de la case e4.'
   },
   {
     from: 'f8',
-    to: 'c5',
+    to: 'e7',
     piece: 'bb',
     color: 'b',
-    san: 'Bc5'
+    description: 'Les Noirs Préparent le roque et place le fou sur une case sûre.'
   },
   {
     from: 'e1',
     to: 'g1',
     piece: 'wk',
     color: 'w',
-    san: 'O-O'
+    description: 'Les Blancs roquent côté roi, sécurisant le roi et connectant les tours.'
   },
   {
-    from: 'g8',
-    to: 'f6',
-    piece: 'bn',
+    from: 'e8',
+    to: 'g8',
+    piece: 'bk',
     color: 'b',
-    san: 'Nf6'
+    description: 'Les Noirs roquent pour mettre le roi en sécurité et activer la tour.'
   }
 ];
 
@@ -179,7 +106,7 @@ function App() {
   return (
     <ChessBoard
       moves={caroKannMoves}
-      title="Caro-Kann Defense"
+      title="Défense Caro-Kann"
     />
   );
 }

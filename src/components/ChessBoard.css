@@ -57,25 +57,34 @@
 }
 
 .piece {
-  font-size: var(--piece-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   user-select: none;
   transition: transform 0.2s ease;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .piece:hover {
   transform: scale(1.1);
+  filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.4));
 }
 
 .piece.white {
-  color: #FFFFFF;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.piece.white:hover {
+  filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.6));
 }
 
 .piece.black {
-  color: #000000;
-  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+  filter: drop-shadow(2px 2px 4px rgba(255, 255, 255, 0.2));
+}
+
+.piece.black:hover {
+  filter: drop-shadow(3px 3px 6px rgba(255, 255, 255, 0.3));
 }
 
 .rank-label {
