@@ -1,54 +1,110 @@
-# React + TypeScript + Vite
+# Interactive Chess Opening Viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive React component for visualizing and learning chess openings. This project allows users to step through chess openings move by move, with descriptions and explanations.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Interactive chess board visualization
+- Step-by-step move playback
+- Opening descriptions and explanations
+- Support for complex moves (like castling)
+- Move slider for quick navigation
 
-## Expanding the ESLint configuration
+## Screenshots
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Caro-Kann Defense
+![Caro-Kann Defense](screenshots/caro-kann.png)
+Black recaptures towards the center, establishing a pawn presence.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
+### London System
+![London System](screenshots/london-system.png)
+Black develops a knight and puts pressure on the center.
+
+## Usage
+
+```tsx
+import ChessBoard, { ChessMove } from './components/ChessBoard';
+
+// Example of a simple move
+const singleMove: ChessMove = {
+  from: 'e2',
+  to: 'e4',
+  piece: 'p',
+  color: 'w',
+  description: "King's Pawn Opening"
+};
+
+// Example of castling (multiple piece move)
+const castlingMove: ChessMove[] = [
+  {
+    from: 'e1',
+    to: 'g1',
+    piece: 'k',
+    color: 'w',
+    description: 'Kingside Castling'
   },
-})
+  {
+    from: 'h1',
+    to: 'f1',
+    piece: 'r',
+    color: 'w'
+  }
+];
+
+// Using the component
+function App() {
+  return (
+    <ChessBoard 
+      moves={[singleMove, castlingMove]} 
+      title="Opening Example"
+    />
+  );
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Component Props
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Prop | Type | Description |
+|------|------|-------------|
+| moves | `(ChessMove \| ChessMove[])[]` | Array of moves or move groups |
+| initialPosition | `string[][]?` | Optional custom initial board position |
+| title | `string?` | Title displayed above the board |
+| description | `string?` | Additional description text |
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## ChessMove Interface
+
+```typescript
+interface ChessMove {
+  from: string;      // Starting square (e.g., 'e2')
+  to: string;        // Target square (e.g., 'e4')
+  piece: string;     // Piece type (e.g., 'p', 'r', 'n', 'b', 'q', 'k')
+  color: 'w' | 'b';  // Piece color ('w' for white, 'b' for black)
+  description?: string; // Optional move description
+}
 ```
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/chess.git
+```
+
+2. Install dependencies:
+```bash
+cd chess
+npm install
+```
+
+3. Start the development server:
+```bash
+npm start
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
