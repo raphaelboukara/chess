@@ -1,0 +1,9 @@
+body {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+
+
