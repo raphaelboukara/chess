@@ -6,7 +6,6 @@ export interface ChessMove {
   from: string;
   to: string;
   piece: string;
-  color: 'w' | 'b';
   description?: string;
 }
 
@@ -55,17 +54,9 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
     const [fromRank, fromFile] = notationToCoords(move.from);
     const [toRank, toFile] = notationToCoords(move.to);
     
-    // Handle different piece code formats
-    let pieceCode = move.piece;
+    console.log(`Move: ${move.from} to ${move.to}, Piece: ${newBoard[fromRank][fromFile]}`);
     
-    // If it's a single character (like 'P', 'R', etc.), convert to full code
-    if (pieceCode.length === 1) {
-      pieceCode = move.color + pieceCode;
-    }
-    
-    console.log(`Move: ${move.from} to ${move.to}, Piece: ${move.piece} -> ${pieceCode}`);
-    
-    newBoard[toRank][toFile] = pieceCode;
+    newBoard[toRank][toFile] = newBoard[fromRank][fromFile];
     newBoard[fromRank][fromFile] = '';
     
     return newBoard;
@@ -76,13 +67,10 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
     let newBoard = boardState.map(row => [...row]);
     
     if (Array.isArray(move)) {
-      console.log('Applying multiple moves');
-      // Apply multiple moves in sequence
       for (const singleMove of move) {
         newBoard = applySingleMove(singleMove, newBoard);
       }
     } else {
-      // Apply single move
       newBoard = applySingleMove(move, newBoard);
     }
     
@@ -99,8 +87,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
     if (!move) return undefined;
     
     if (Array.isArray(move)) {
-      // For multiple moves, use the description from the first move if available
-      return move[0]?.description;
+      return `${move[0]?.description} ${move[1]?.description}`;
     }
     return move.description;
   }, []);
