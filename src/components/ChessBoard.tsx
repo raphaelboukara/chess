@@ -5,7 +5,6 @@ import ChessPiece from './ChessPiece';
 export interface ChessMove {
   from: string;
   to: string;
-  piece: string;
   description?: string;
 }
 
@@ -16,10 +15,11 @@ interface ChessBoardProps {
   description?: string;
 }
 
-const ChessBoard: React.FC<ChessBoardProps> = ({ 
-  moves, 
-  initialPosition, 
+const ChessBoard: React.FC<ChessBoardProps> = ({
+  moves,
+  initialPosition,
   title = "Chess Move Player",
+  description = ""
 }) => {
   const [currentMoveIndex, setCurrentMoveIndex] = useState(-1);
   const [board, setBoard] = useState<string[][]>([]);
@@ -27,7 +27,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   // Initialize the board with the starting position
   const getInitialBoard = useCallback((): string[][] => {
     if (initialPosition) return initialPosition;
-    
+
     return [
       ['br', 'bn', 'bb', 'bq', 'bk', 'bb', 'bn', 'br'],
       ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
@@ -53,19 +53,19 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
     const newBoard = boardState.map(row => [...row]);
     const [fromRank, fromFile] = notationToCoords(move.from);
     const [toRank, toFile] = notationToCoords(move.to);
-    
+
     console.log(`Move: ${move.from} to ${move.to}, Piece: ${newBoard[fromRank][fromFile]}`);
-    
+
     newBoard[toRank][toFile] = newBoard[fromRank][fromFile];
     newBoard[fromRank][fromFile] = '';
-    
+
     return newBoard;
   }, [notationToCoords]);
 
   // Apply a move (single or multiple) to the board
   const applyMove = useCallback((move: ChessMove | ChessMove[], boardState: string[][]): string[][] => {
     let newBoard = boardState.map(row => [...row]);
-    
+
     if (Array.isArray(move)) {
       for (const singleMove of move) {
         newBoard = applySingleMove(singleMove, newBoard);
@@ -73,7 +73,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
     } else {
       newBoard = applySingleMove(move, newBoard);
     }
-    
+
     return newBoard;
   }, [applySingleMove]);
 
@@ -85,7 +85,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   // Get description for a move (single or multiple)
   const getMoveDescription = useCallback((move: ChessMove | ChessMove[] | undefined): string | undefined => {
     if (!move) return undefined;
-    
+
     if (Array.isArray(move)) {
       return `${move[0]?.description} ${move[1]?.description}`;
     }
@@ -100,13 +100,13 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   // Apply moves up to current index
   useEffect(() => {
     let currentBoard = getInitialBoard();
-    
+
     for (let i = 0; i <= currentMoveIndex; i++) {
       if (moves[i]) {
         currentBoard = applyMove(moves[i], currentBoard);
       }
     }
-    
+
     setBoard(currentBoard);
   }, [currentMoveIndex, moves, getInitialBoard, applyMove]);
 
@@ -134,15 +134,14 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
             {rank}
           </div>
         ))}
-        
+
         {/* Chess squares */}
         {board.map((rank, rankIndex) =>
           rank.map((piece, fileIndex) => (
             <div
               key={`${rankIndex}-${fileIndex}`}
-              className={`square ${
-                (rankIndex + fileIndex) % 2 === 0 ? 'light' : 'dark'
-              }`}
+              className={`square ${(rankIndex + fileIndex) % 2 === 0 ? 'light' : 'dark'
+                }`}
               style={{
                 gridRow: rankIndex + 1,
                 gridColumn: fileIndex + 2
@@ -156,7 +155,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
             </div>
           ))
         )}
-        
+
         {/* File labels */}
         {files.map((file, index) => (
           <div
@@ -168,7 +167,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
           </div>
         ))}
       </div>
-      
+
       {/* Right Sidebar */}
       <div className="chess-sidebar">
         <h1>
@@ -176,29 +175,31 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
         </h1>
 
         <div className="move-description">
-          {getMoveDescription(moves[currentMoveIndex])}
+          {getMoveDescription(moves[currentMoveIndex]) || description}
         </div>
-        
-        <div className="controls">
-          <span>{currentMoveIndex + 1}/{moves.length}</span>
 
-          <input type="range"
+        {moves.length > 0 && (
+          <div className="controls">
+            <span>{currentMoveIndex + 1}/{moves.length}</span>
+
+            <input type="range"
               min="-1"
               max={Math.max(-1, moves.length - 1)}
               value={currentMoveIndex}
               onChange={(e) => goToMove(parseInt(e.target.value))}
               className="slider"
             />
-          
-          <div className="control-buttons">
-            <button onClick={goBack} disabled={currentMoveIndex === -1}>
-              ◀
-            </button>
-            <button onClick={goForward} disabled={currentMoveIndex === moves.length - 1}>
-              ▶
-            </button>
+
+            <div className="control-buttons">
+              <button onClick={goBack} disabled={currentMoveIndex === -1}>
+                ◀
+              </button>
+              <button onClick={goForward} disabled={currentMoveIndex === moves.length - 1}>
+                ▶
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
